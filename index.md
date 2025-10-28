@@ -108,9 +108,6 @@ $$
 $$
 	- I experimented with both Gaussian noise and the **Ornstein–Uhlenbeck (OU)** process (as used in the original paper). Different decay strategies (exponential and adaptive) were tested both per episode and per step.
 
-```mermaid graph TD subgraph Actor A1[State → 256] --> A2[ReLU → 256] --> A3[ReLU → tanh] end subgraph Critic C1[State → 256] --> C2[ReLU] Action --> C2 C2[→ 256] --> C3[ReLU → 1] end Replay[Replay Buffer] --> Train Noise[OU / Gaussian] --> Action
-```
-
 ### Ornstein–Uhlenbeck process
 The OU process is a **stochastic process** way of modeling noise that evolves over time and tends to “drift back” toward a mean value. Mathematically, it’s defined by the stochastic differential equation:
 $$
@@ -335,3 +332,17 @@ Overall, OU noise tends to produce **highly variable, peak-performing outcomes**
 
 > **Key Insight**: DDPG shines in **mid-complexity** tasks but needs heavy tuning at scale.  
 > → **Next**: Implementing **TD3 + Prioritized Experience Replay** for better stability.
+
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true
+    },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
