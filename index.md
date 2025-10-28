@@ -9,8 +9,8 @@ Deep Deterministic Policy Gradient **DDPG** is an **actor-critic**, **model-free
 ## Core Concepts
 At the core of DDPG lie two neural networks, the **actor** and **critic**:
 
-- The **actor** learns a deterministic policy $\mu(s|\theta^\mu)$ that maps states directly to actions.
-- The **critic** estimates the Q-value function $Q(s, a|\theta^Q)$, which evaluates how good an action is in a given state.
+- The **actor** learns a deterministic policy \( \mu(s \mid \theta^\mu) \) that maps states to actions.
+- The **critic** estimates the Q-value \( Q(s, a \mid \theta^Q) \) to evaluate action quality.
 
 To ensure training stability, DDPG also maintains **target networks**, slower-moving copies of both the actor and critic, that are used for generating stable target values during updates.
 
