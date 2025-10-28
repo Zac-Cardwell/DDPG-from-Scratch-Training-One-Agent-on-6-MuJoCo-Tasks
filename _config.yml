@@ -2,3 +2,4 @@ title: "DDPG from Scratch: Training One Agent on 6 MuJoCo Tasks"
 description: "Deep Deterministic Policy Gradient Implementation & Results"
 remote_theme: just-the-docs/just-the-docs
 color_scheme: dark
+nav_enabled: false
