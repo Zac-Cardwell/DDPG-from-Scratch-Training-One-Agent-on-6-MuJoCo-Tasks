@@ -1,0 +1,32 @@
+{
+    "env": "InvertedDoublePendulum-v5",
+    "name": "exp_6D",
+    "seeds": [
+        42,
+        123,
+        2025,
+        404,
+        2718
+    ],
+    "hidden_dim": 256,
+    "actor_lr": 0.0003,
+    "critic_lr": 0.00025,
+    "gamma": 0.99,
+    "tau": 0.005,
+    "weight_decay": 0.01,
+    "batch_size": 128,
+    "buffer_size": 100000,
+    "warmup_steps": 1000,
+    "expl_noise": 0.1,
+    "noise_decay": 0.99,
+    "min_expl_noise": 0.01,
+    "num_episodes": 3000,
+    "max_steps_per_episode": 1000,
+    "test_freq": 100,
+    "test_episodes": 10,
+    "reward_scale": 0.1,
+    "normalize": false,
+    "save_model": true,
+    "load_model": "",
+    "notes": "Testing with OU noise and exp step decay"
+}
