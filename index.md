@@ -349,6 +349,7 @@ Overall, OU noise tends to produce **highly variable, peak-performing outcomes**
 > **Key Insight**: DDPG shines in **mid-complexity** tasks but needs heavy tuning at scale.  
 > → **Next**: Implementing **TD3 + Prioritized Experience Replay** for better stability.
 
+<!-- Enable LaTeX rendering via MathJax -->
 <script>
   window.MathJax = {
     tex: {
@@ -358,4 +359,7 @@ Overall, OU noise tends to produce **highly variable, peak-performing outcomes**
     },
     svg: { fontCache: 'global' }
   };
+</script>
+<script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
 </script>
