@@ -1,9 +1,4 @@
-  
----
-layout: default
-title: DDPG from Scratch: Training One Agent on 6 MuJoCo Tasks
----
-  
+
 ### What I Delivered 
 - **Clean, modular PyTorch DDPG** with target-net soft updates, replay buffer, OU/Gaussian noise
 - **Running-state normalization layer** (inspired by SB3) + ablation study
