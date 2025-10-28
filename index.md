@@ -1,9 +1,4 @@
 
-### What I Delivered 
-- **Clean, modular PyTorch DDPG** with target-net soft updates, replay buffer, OU/Gaussian noise
-- **Running-state normalization layer** (inspired by SB3) + ablation study
-- **6-environment benchmark** (Ant, Hopper, …) + noise/decay hyper-parameter sweeps
-  
 ## Introduction to DDPG
 
 <video src="assets/video/best_model_seed_42-episode-0.mp4" autoplay loop muted playsinline width="400">
@@ -15,8 +10,8 @@ Deep Deterministic Policy Gradient **DDPG** is an **actor-critic**, **model-free
 ## Core Concepts
 At the core of DDPG lies two neural networks, the **actor** and **critic**:
 
-- The **actor** learns a deterministic policy $\large \mu(s|\theta^\mu)$ that maps states directly to actions.
-- The **critic** estimates the Q-value function $\large Q(s, a|\theta^Q)$, which evaluates how good an action is in a given state.
+- The **actor** learns a deterministic policy \(\mu(s|\theta^\mu)\) that maps states directly to actions.
+- The **critic** estimates the Q-value function \(\,Q(s, a|\theta^Q)\,\), which evaluates how good an action is in a given state.
 
 To ensure training stability, DDPG also maintains **target networks**, slower-moving copies of both the actor and critic, that are used for generating stable target values during updates.
 
@@ -245,17 +240,19 @@ The _InvertedDoublePendulum-v5_ environment revealed a particularly **volatile c
 
 Collectively, these findings indicate that while the agent can learn robust control policies in simpler or moderately complex environments, **performance degrades as task dimensionality and dynamical complexity increase**, highlighting areas where further optimization, especially in critic stability, would likely yield substantial gains.
 
-|Environment|Mean Test Reward|± Std (5 seeds)|Final Test Reward|Episodes to 90%|
-|---|---|---|---|---|
-|**HalfCheetah-v5**|**3,328**|± 412|4,053|480|
-|**InvertedDoublePendulum-v5**|**5,295**|± 2,103|9,329|310|
-|**Hopper-v5**|1,220|± 498|1,642|720|
-|**InvertedPendulum-v5**|631|± 184|1,000|380|
-|**Walker2D-v5**|907|± 892|1,046|1,100|
-|**Ant-v5**|727|± 238|850|> 3,000|
-*Test reward = average over 10 noise-free eval episodes. "Episodes to 90%" = first episode where mean reward ≥ 90% of env max.*
+| Environment | Mean Test Reward | ± Std (5 seeds) | Final Test Reward | Episodes to 90% |
+|--------------|------------------|-----------------|-------------------|-----------------|
+| **HalfCheetah-v5** | **3,328** | ± 412 | 4,053 | 480 |
+| **InvertedDoublePendulum-v5** | **5,295** | ± 2,103 | 9,329 | 310 |
+| **Hopper-v5** | 1,220 | ± 498 | 1,642 | 720 |
+| **InvertedPendulum-v5** | 631 | ± 184 | 1,000 | 380 |
+| **Walker2D-v5** | 907 | ± 892 | 1,046 | 1,100 |
+| **Ant-v5** | 727 | ± 238 | 850 | > 3,000 |
+
+*Test reward = average over 10 noise-free eval episodes. “Episodes to 90%” = first episode where mean reward ≥ 90% of env max.*
+
 **Table 1.** Performance metrics for the generalization tests across MuJoCo environments.
-c
+
 
 <table>
   <tr>
@@ -284,12 +281,13 @@ The impact of state normalization varied notably across environments, suggesting
 Conversely, in more complex environments like _Walker2D-v5_ and _HalfCheetah-v5_, **state normalization improved performance and stability**. These tasks feature higher-dimensional and more diverse state representations, where raw state magnitudes can vary significantly between features. Normalization in these settings helps maintain consistent gradient scales and prevents the policy and critic networks from being dominated by larger-magnitude features, leading to smoother training dynamics.
 
 | Environment     | Normalization | Mean Test Reward | Final Test Reward | Mean Critic Loss | Final Critic Loss | Mean Steps |
-| --------------- | ------------- | ---------------- | ----------------- | ---------------- | ----------------- | ---------- |
-| **Hopper-v5**   | ✗ Without     | **1219.62**      | **1642.24**       | 40.77            | 57.77             | 338.85     |
-| **Hopper-v5**   | ✓ With        | 1118.73          | 1116.16           | **24.79**        | **50.15**         | 310.95     |
-| **Walker2D-v5** | ✗ Without     | 677.62           | 3290.54           | **69.17**        | **199.37**        | 299.20     |
-| **Walker2D-v5** | ✓ With        | **906.89**       | **1045.66**       | 110.09           | 337.74            | 269.73     |
-**Table 2.** Effect of State Normalization on Performance for _Hopper-v5_ and _Walker2D-v5_
+|-----------------|---------------|------------------|-------------------|------------------|-------------------|-------------|
+| **Hopper-v5**   | ✗ Without     | **1219.62**      | **1642.24**       | 40.77            | 57.77             | 338.85      |
+| **Hopper-v5**   | ✓ With        | 1118.73          | 1116.16           | **24.79**        | **50.15**         | 310.95      |
+| **Walker2D-v5** | ✗ Without     | 677.62           | 3290.54           | **69.17**        | **199.37**        | 299.20      |
+| **Walker2D-v5** | ✓ With        | **906.89**       | **1045.66**       | 110.09           | 337.74            | 269.73      |
+
+**Table 2.** Effect of State Normalization on Performance for _Hopper-v5_ and _Walker2D-v5_.
 
 The effect of state normalization differs sharply between environments. For _Hopper-v5_, normalization slightly reduced both mean and final test rewards, suggesting that rescaling the already well-behaved state space interfered with learning stability. However, for _Walker2D-v5_, normalization led to a higher mean test reward and smoother learning curves, despite a somewhat higher critic loss. This indicates that in higher-dimensional, more complex environments, normalization can aid performance even if it introduces noisier critic updates, likely by improving the conditioning of network inputs.
 
@@ -303,13 +301,14 @@ OU noise with episode decay produced extremely high test rewards, exceeding 9,00
 
 Overall, OU noise tends to produce **highly variable, peak-performing outcomes**, whereas Gaussian noise provides **more stable and consistent training**. Step-based decay generally extends episode length and can amplify training rewards, but may reduce evaluation stability, particularly in combination with Gaussian noise. These findings indicate that careful selection of noise type and decay strategy is critical for balancing exploration, stability, and reward performance.
 
-|Noise Type|Decay Type|Actor Loss (mean_of_means)|Critic Loss (mean_of_means)|Train Reward (mean_of_means)|Test Reward (mean_of_means)|Mean Steps|
-|---|---|---|---|---|---|---|
-|OU|Episode|-179.03|410.35|291.63|5294.68|32.54|
-|Gaussian|Episode|-22.36|2.09|772.58|863.13|83.80|
-|OU|Step|-10.91|0.87|334.44|828.15|37.05|
-|Gaussian|Step|-34.64|3.75|1083.38|1290.51|116.98|
-**Table 3.** Effect of Noise on Performance for _InvertedDoublePendulum
+| Noise Type | Decay Type | Actor Loss (mean_of_means) | Critic Loss (mean_of_means) | Train Reward (mean_of_means) | Test Reward (mean_of_means) | Mean Steps |
+|-------------|-------------|-----------------------------|------------------------------|-------------------------------|------------------------------|-------------|
+| OU | Episode | -179.03 | 410.35 | 291.63 | 5294.68 | 32.54 |
+| Gaussian | Episode | -22.36 | 2.09 | 772.58 | 863.13 | 83.80 |
+| OU | Step | -10.91 | 0.87 | 334.44 | 828.15 | 37.05 |
+| Gaussian | Step | -34.64 | 3.75 | 1083.38 | 1290.51 | 116.98 |
+
+**Table 3.** Effect of Noise on Performance for _InvertedDoublePendulum_
 
 <table>
   <tr>
@@ -334,7 +333,7 @@ Overall, OU noise tends to produce **highly variable, peak-performing outcomes**
 > → **Next**: Implementing **TD3 + Prioritized Experience Replay** for better stability.
 
 <script>
-  MathJax = {
+  window.MathJax = {
     tex: {
       inlineMath: [['$', '$'], ['\\(', '\\)']],
       displayMath: [['$$', '$$'], ['\\[', '\\]']],
@@ -342,7 +341,4 @@ Overall, OU noise tends to produce **highly variable, peak-performing outcomes**
     },
     svg: { fontCache: 'global' }
   };
-</script>
-<script id="MathJax-script" async
-        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
 </script>
