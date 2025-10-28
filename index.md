@@ -9,8 +9,8 @@ Deep Deterministic Policy Gradient **DDPG** is an **actor-critic**, **model-free
 ## Core Concepts
 At the core of DDPG lie two neural networks, the **actor** and **critic**:
 
-- The **actor** learns a deterministic policy \( \mu(s \mid \theta^\mu) \) that maps states directly to actions.  
-- The **critic** estimates the Q-value function \( Q(s, a \mid \theta^Q) \), which evaluates how good an action is in a given state.
+- The **actor** learns a deterministic policy $\mu(s|\theta^\mu)$ that maps states directly to actions.
+- The **critic** estimates the Q-value function $Q(s, a|\theta^Q)$, which evaluates how good an action is in a given state.
 
 To ensure training stability, DDPG also maintains **target networks**, slower-moving copies of both the actor and critic, that are used for generating stable target values during updates.
 
@@ -22,15 +22,15 @@ Learning in DDPG revolves around two complementary objectives:
 ### Critic Update
 The critic learns using **Temporal Difference (TD) learning**, minimizing the error between its prediction and a target value computed with the target networks:
 
-\[
+$$
 y = r + \gamma Q'(s', \mu'(s'|\theta^{\mu'})|\theta^{Q'})
-\]
+$$
 
 and the critic loss function is given by
 
-\[
+$$
 L = \mathbb{E}_{(s,a,r,s') \sim D} \left[ \left( Q(s,a|\theta^Q) - y \right)^2 \right]
-\]
+$$
 
 In practice, the critic update can be implemented as follows:
 
@@ -51,19 +51,15 @@ self.critic_optimizer.step()
 ### Actor Update
 The actor aims to maximize the critic’s estimated Q-values by improving its policy:
 
-\[
+$$
 J(\theta^\mu) = \mathbb{E}_{s_t \sim D} \left[ Q(s_t, \mu(s_t|\theta^\mu)) \right]
-\]
+$$
 
 and its gradient can be expressed as
 
-\[
-\nabla_{\theta^\mu} J \approx \mathbb{E}_{s_t \sim D} 
-\left[ 
-\nabla_a Q(s,a|\theta^Q)\big|_{a=\mu(s)} 
-\nabla_{\theta^\mu} \mu(s|\theta^\mu) 
-\right]
-\]
+$$
+\nabla_{\theta^\mu} J \approx \mathbb{E}_{s_t \sim D} \left[ \nabla_a Q(s,a|\theta^Q)|_{a=\mu(s)} \nabla_{\theta^\mu} \mu(s|\theta^\mu) \right]
+$$
 
 This is typically implemented by minimizing the negative Q-value of the actor’s actions:
 
@@ -80,11 +76,11 @@ To prevent instability and divergence during training, DDPG employs several key 
 #### 1. Target Network Soft Updates
 The target networks are updated gradually to avoid large shifts in target values:
 
-\[
+$$
 \theta' \leftarrow \tau \theta + (1 - \tau) \theta'
-\]
+$$
 
-where \\( \tau\\) is a small constant typically around 0.001
+where $\tau$ is a small constant typically around 0.001
 
 ```python
 for target_param, param in zip(self.actor_target.parameters(), self.actor.parameters()):
@@ -111,31 +107,31 @@ My implementation follows the general architecture described by _Lillicrap et al
 - **Exploration Noise**:  
     - Because DDPG policies are deterministic, exploration is achieved by adding noise to the actor’s output:
     - 
-\[
+$$
 \mu'(s_t) = \mu(s_t|\theta^\mu) + N_t​
-\]
+$$
 
 	- I experimented with both Gaussian noise and the **Ornstein–Uhlenbeck (OU)** process (as used in the original paper). Different decay strategies (exponential and adaptive) were tested both per episode and per step.
 
 ### Ornstein–Uhlenbeck process
 The OU process is a **stochastic process** way of modeling noise that evolves over time and tends to “drift back” toward a mean value. Mathematically, it’s defined by the stochastic differential equation:
 
-\[
-dx_t = \theta (\mu - x_t) dt + \sigma dW_t
-\]
+$$
+dx_t = \theta (\mu - x_t) dt + \sigma dW_t​
+$$
 
-where:  
-- \( x_t \) → the process value at time \( t \)  
-- \( \theta \) → the rate of mean reversion  
-- \( \mu \) → the long-term mean  
-- \( \sigma \) → the volatility (noise amplitude)  
-- \( W_t \) → a Wiener process (standard Brownian motion)
+where:
+- $x_t$ → the process value at time t
+- $\theta$ → the rate of mean reversion
+- $\mu$ → the long-term mean
+- $\sigma$ → the volatility (noise amplitude)
+- $W_t$​ → a Wiener process (standard Brownian motion)
 
 In reinforcement learning we use the discrete form:
 
-\[
-x_{t+1} = x_t + \theta (\mu - x_t) \Delta t + \sigma \sqrt{\Delta t} \, \epsilon_t, \quad \epsilon_t \sim \mathcal{N}(0,1)
-\]
+$$
+x_{t+1} = x_t + \theta (\mu - x_t) \Delta t + \sigma \sqrt{\Delta t} \, \epsilon_t, \quad \epsilon_t \sim \mathcal{N}(0, 1)
+$$
 
 ```python
 class OUNoise:
