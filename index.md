@@ -106,11 +106,12 @@ My implementation follows the general architecture described by _Lillicrap et al
 
 - **Exploration Noise**:  
     - Because DDPG policies are deterministic, exploration is achieved by adding noise to the actor’s output:
+
 $$
 \mu'(s_t) = \mu(s_t|\theta^\mu) + N_t​
 $$
 
-	- I experimented with both Gaussian noise and the **Ornstein–Uhlenbeck (OU)** process (as used in the original paper). Different decay strategies (exponential and adaptive) were tested both per episode and per step.
+- I experimented with both Gaussian noise and the **Ornstein–Uhlenbeck (OU)** process (as used in the original paper). Different decay strategies (exponential and adaptive) were tested both per episode and per step.
 
 ### Ornstein–Uhlenbeck process
 The OU process is a **stochastic process** way of modeling noise that evolves over time and tends to “drift back” toward a mean value. Mathematically, it’s defined by the stochastic differential equation:
