@@ -1,4 +1,3 @@
-
 ## Introduction to DDPG
 
 <video src="assets/video/best_model_seed_42-episode-0.mp4" autoplay loop muted playsinline width="400">
