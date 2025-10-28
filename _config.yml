@@ -3,3 +3,21 @@ description: "Deep Deterministic Policy Gradient Implementation & Results"
 remote_theme: just-the-docs/just-the-docs
 color_scheme: dark
 nav_enabled: false
+
+# ───── MATHJAX (critical) ─────
+markdown: kramdown
+kramdown:
+  input: GFM
+  math_engine: mathjax
+  math_engine_opts:
+    preview: true
+    # Prevent Jekyll from turning \[ into [
+    parse_block_html: true
+
+# Load MathJax globally
+plugins:
+  - jekyll-remote-theme
+
+# Optional: extra head HTML
+include:
+  - _includes

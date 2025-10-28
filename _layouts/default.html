@@ -1,0 +1,16 @@
+---
+# This overrides just-the-docs default layout
+---
+<!DOCTYPE html>
+<html lang="en">
+{% include head.html %}
+{% include head-mathjax.html %}   <!-- ADD THIS LINE -->
+</head>
+<body>
+  {% include header.html %}
+  <main class="container-lg py-4">
+    {{ content }}
+  </main>
+  {% include footer.html %}
+</body>
+</html>
