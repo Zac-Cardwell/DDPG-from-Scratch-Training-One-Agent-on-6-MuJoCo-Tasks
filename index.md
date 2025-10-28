@@ -106,7 +106,6 @@ My implementation follows the general architecture described by _Lillicrap et al
 
 - **Exploration Noise**:  
     - Because DDPG policies are deterministic, exploration is achieved by adding noise to the actor’s output:
-    - 
 $$
 \mu'(s_t) = \mu(s_t|\theta^\mu) + N_t​
 $$
