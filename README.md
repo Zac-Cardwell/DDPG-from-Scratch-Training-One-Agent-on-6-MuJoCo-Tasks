@@ -1,2 +1,2 @@
-# DDPG-from-Scratch-Training-One-Agent-on-6-MuJoCo-Tasks
+# DDPG-from-Scratch-Training-on-6-MuJoCo-Tasks
 Deep Deterministic Policy Gradient — Implementation &amp; Experiments
