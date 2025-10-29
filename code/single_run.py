@@ -5,7 +5,7 @@ import numpy as np
 import os
 import gymnasium as gym
 import sys
-sys.path.append(os.path.abspath("/mnt/Linux_4TB_HDD/CodeProjects/Machine_Learning/Paper_Recreations/common"))
+sys.path.append(os.path.abspath("../common"))
 import util, graphing
 
 import ddpg
@@ -66,12 +66,12 @@ def save_exp(config, aloss, closs, train, test, steps, save_path):
 
 
 if __name__ == "__main__":
-    config = util.load_config("/mnt/Linux_4TB_HDD/CodeProjects/Machine_Learning/Paper_Recreations/ddpg/config.json")
+    config = util.load_config("config.json")
     util.set_seed(config["seeds"][0])
 
     save_path = None
     if config["save_model"]:
-        save_path, plots_dir = util.setup_experiment_dir("/mnt/Linux_4TB_HDD/CodeProjects/Machine_Learning/Paper_Recreations/ddpg", config["name"], config["env"])
+        save_path, plots_dir = util.setup_experiment_dir("ddpg", config["name"], config["env"])
         video_dir = os.path.join(save_path, "videos")
         os.makedirs(video_dir, exist_ok=True)
 
