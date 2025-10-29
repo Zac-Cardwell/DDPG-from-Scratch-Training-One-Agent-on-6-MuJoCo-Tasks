@@ -8,7 +8,7 @@ import os
 import gymnasium as gym
 import sys
 
-sys.path.append(os.path.abspath("/mnt/Linux_4TB_HDD/CodeProjects/Machine_Learning/Paper_Recreations/common"))
+sys.path.append(os.path.abspath("../common"))
 import util, graphing
 
 import ddpg
@@ -123,7 +123,7 @@ def save_exp(config,
 
 
 if __name__ == "__main__":
-    config = util.load_config("/mnt/Linux_4TB_HDD/CodeProjects/Machine_Learning/Paper_Recreations/ddpg/config.json")
+    config = util.load_config("config.json")
     
     all_train_rewards = []
     all_test_rewards = []
@@ -136,7 +136,7 @@ if __name__ == "__main__":
 
     main_save_path = None
     if config["save_model"]:
-        main_save_path, main_plots_dir = util.setup_experiment_dir("/mnt/Linux_4TB_HDD/CodeProjects/Machine_Learning/Paper_Recreations/ddpg", config["name"], config["env"])
+        main_save_path, main_plots_dir = util.setup_experiment_dir("ddpg", config["name"], config["env"])
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     env = gym.make(config["env"])
